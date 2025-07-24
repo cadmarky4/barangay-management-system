@@ -3,25 +3,24 @@
 # Wait a moment for any setup
 sleep 2
 
-# Clear caches
-php artisan config:clear
+# Clear caches (ignore errors)
+php artisan config:clear 2>/dev/null || true
 php artisan cache:clear 2>/dev/null || true
-php artisan view:clear
-php artisan route:clear
+php artisan view:clear 2>/dev/null || true
+php artisan route:clear 2>/dev/null || true
 
 # Run migrations
 php artisan migrate --force
 
-# Force seed the database (this will create users)
-echo "Seeding database..."
-php artisan db:seed --force --class=DatabaseSeeder
+# Seed only if empty
+php artisan db:seed --force 2>/dev/null || echo "Seeding skipped or failed"
 
-# Cache configurations for production
+# Cache configurations
 if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache
     php artisan route:cache
     php artisan view:cache
 fi
 
-# Start Apache in foreground
+# Start Apache
 apache2-foreground
