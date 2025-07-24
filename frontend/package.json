@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:production": "CI=false vite build",
-    "build:vercel": "vite build --mode production",
+    "build:production": "vite build --mode production",
+    "build:vercel": "tsc --noEmit false && vite build",
+    "build:ignore-errors": "vite build",
     "lint": "npx gts lint",
     "preview": "vite preview",
     "clean": "npx gts clean",
