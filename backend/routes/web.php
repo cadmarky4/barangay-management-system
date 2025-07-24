@@ -8,6 +8,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Add this route to your web.php
+Route::get('/seed-db', function () {
+    try {
+        Artisan::call('db:seed', ['--force' => true]);
+        return response()->json([
+            'message' => 'Database seeded successfully',
+            'user_count' => User::count()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
 // Temporary debug route - REMOVE AFTER TESTING
 Route::get('/debug-db', function () {
     try {

@@ -3,15 +3,18 @@
 # Wait a moment for any setup
 sleep 2
 
-# Create cache and queue tables if they don't exist
-php artisan cache:table 2>/dev/null || echo "Cache table already exists or creation failed"
-php artisan queue:table 2>/dev/null || echo "Queue table already exists or creation failed"
-
 # Clear caches
 php artisan config:clear
-php artisan cache:clear
+php artisan cache:clear 2>/dev/null || true
 php artisan view:clear
 php artisan route:clear
+
+# Run migrations
+php artisan migrate --force
+
+# Force seed the database (this will create users)
+echo "Seeding database..."
+php artisan db:seed --force --class=DatabaseSeeder
 
 # Cache configurations for production
 if [ "$APP_ENV" = "production" ]; then
@@ -19,9 +22,6 @@ if [ "$APP_ENV" = "production" ]; then
     php artisan route:cache
     php artisan view:cache
 fi
-
-# Run migrations
-php artisan migrate --force
 
 # Start Apache in foreground
 apache2-foreground
