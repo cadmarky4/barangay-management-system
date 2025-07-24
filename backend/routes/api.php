@@ -290,6 +290,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // File Upload
     Route::post('/upload', [FileUploadController::class, 'upload']);
 
+    // Administrative Appointments Management
+    Route::prefix('appointments')->group(function () {
+        Route::get('/', [AppointmentController::class, 'index']);
+        Route::get('/statistics', [AppointmentController::class, 'statistics']);
+        Route::get('/{id}', [AppointmentController::class, 'show']);
+        Route::put('/{id}/status', [AppointmentController::class, 'updateStatus']);
+        Route::delete('/{id}', [AppointmentController::class, 'destroy']);
+    });
+
+
     // Agendas Management
     Route::prefix('agendas')->group(function () {
         Route::get('/statistics', [AgendaController::class, 'statistics']);
