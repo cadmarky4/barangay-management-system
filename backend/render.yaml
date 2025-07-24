@@ -1,36 +1,34 @@
 services:
   - type: web
     name: lgu-ims-backend
-    env: docker
-    plan: starter # or free
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./
+    env: php
+    buildCommand: composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    plan: free
     envVars:
       - key: APP_NAME
-        value: LGU IMS
+        value: LGU IMS Backend
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
       - key: APP_KEY
-        generateValue: true
-      - key: LOG_LEVEL
-        value: error
+        value: base64:your-generated-key-here
+      - key: APP_URL
+        value: https://lgu-ims-backend.onrender.com
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/html/database/database.sqlite
       - key: CACHE_DRIVER
         value: file
       - key: SESSION_DRIVER
         value: file
+      - key: SESSION_LIFETIME
+        value: 120
       - key: QUEUE_CONNECTION
         value: sync
-      - key: DB_CONNECTION
-        value: mysql
-      - key: DATABASE_URL
-        fromDatabase:
-          name: lgu-ims-db
-          property: connectionString
-
-databases:
-  - name: lgu-ims-db
-    plan: starter # or free
-    databaseName: lgu_ims
-    user: lgu_user
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: error
