@@ -1,0 +1,1027 @@
+{
+  "residents": {
+    "form": {
+      "actions": {
+        "next": "Next",
+        "previous": "Previous",
+        "saveDraft": "Save Draft",
+        "clearDraft": "Clear Draft",
+        "savingDraft": "Saving Draft...",
+        "cancel": "Cancel",
+        "register": "Register Resident",
+        "update": "Update Resident",
+        "registering": "Saving...",
+        "updating": "Updating...",
+        "close": "Close"
+      },
+      "sections": {
+        "governmentIds": "Government IDs & Documents",
+        "healthMedical": "Health & Medical Information",
+        "specialClassifications": "Special Classifications",
+        "employmentEducation": "Employment & Education",
+        "basicInfo": "Basic Information",
+        "contactInfo": "Contact Information",
+        "familyInfo": "Family Information",
+        "profilePhoto": "Profile Photo"
+      },
+      "fields": {
+        "houseNumber": "House Number",
+        "street": "Street",
+        "primaryIdType": "Primary ID Type",
+        "idNumber": "ID Number",
+        "philhealthNumber": "PhilHealth Number",
+        "sssNumber": "SSS Number",
+        "tinNumber": "TIN Number",
+        "votersIdNumber": "Voter's ID Number",
+        "voterStatus": "Voter Status",
+        "precinctNumber": "Precinct Number",
+        "medicalConditions": "Medical Conditions",
+        "allergies": "Allergies",
+        "seniorCitizen": "Senior Citizen (60 years old and above)",
+        "personWithDisability": "Person With Disability (PWD)",
+        "disabilityType": "Type of Disability",
+        "indigenousPeople": "Indigenous People",
+        "indigenousGroup": "Indigenous Group",
+        "fourPsBeneficiary": "4Ps Beneficiary",
+        "fourPsHouseholdId": "4Ps Household ID",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "middleName": "Middle Name",
+        "suffix": "Suffix",
+        "birthDate": "Birth Date",
+        "age": "Age (automatically calculated)",
+        "birthPlace": "Birth Place",
+        "gender": "Gender",
+        "civilStatus": "Civil Status",
+        "nationality": "Nationality",
+        "religion": "Religion",
+        "educationalAttainment": "Educational Attainment",
+        "employmentStatus": "Employment Status",
+        "occupation": "Occupation",
+        "employer": "Employer",
+        "monthlyIncome": "Monthly Income",
+        "mobileNumber": "Mobile Number",
+        "landlineNumber": "Landline Number",
+        "emailAddress": "Email Address",
+        "streetAddress": "Street Address",
+        "completeAddress": "Complete Address",
+        "motherName": "Mother's Name",
+        "fatherName": "Father's Name",
+        "emergencyContactName": "Emergency Contact Name",
+        "emergencyContactNumber": "Emergency Contact Number",
+        "emergencyContactRelationship": "Emergency Contact Relationship",
+        "householdId": "Household ID",
+        "region": "Region",
+        "province": "Province",
+        "city": "City/Municipality",
+        "barangay": "Barangay"
+      },
+      "placeholders": {
+        "houseNumber": "e.g. 123, Blk 4 Lot 5",
+        "street": "Enter street name",
+        "primaryIdType": "Select primary ID type",
+        "idNumber": "Enter ID Number",
+        "philhealthNumber": "XX-XXXXXXXXX-X",
+        "sssNumber": "XX-XXXXXXX-X",
+        "tinNumber": "XXX-XXX-XXX-XXX",
+        "votersIdNumber": "Enter Voter's ID Number",
+        "voterStatus": "Select voter status",
+        "precinctNumber": "Enter precinct number...",
+        "medicalConditions": "List any medical conditions, medications, or health concerns...",
+        "allergies": "List any known allergies (food, medication, environmental)...",
+        "disabilityType": "Specify type of disability",
+        "indigenousGroup": "Specify indigenous group",
+        "fourPsHouseholdId": "Enter 4Ps household ID",
+        "firstName": "Enter first name here...",
+        "lastName": "Enter last name here...",
+        "middleName": "Leave blank if not applicable",
+        "birthPlace": "Enter birth place...",
+        "nationality": "Enter nationality...",
+        "religion": "Enter religion here...",
+        "educationalAttainment": "e.g. High School Graduate, College Graduate...",
+        "occupation": "e.g. Teacher, Engineer, Farmer...",
+        "employer": "Name of employer/company...",
+        "mobileNumber": "+63 XXX XXX XXXX",
+        "landlineNumber": "(02) XXXX-XXXX",
+        "emailAddress": "resident@gmail.com",
+        "streetAddress": "e.g. Rizal Street",
+        "completeAddress": "Enter complete address...",
+        "motherName": "Search existing residents or enter new",
+        "fatherName": "Search existing residents or enter new",
+        "emergencyContactName": "Full Name of emergency contact",
+        "emergencyContactNumber": "+63 XXX XXX XXXX",
+        "emergencyContactRelationship": "e.g. Sibling, Friend, Relative...",
+        "region": "Select your Region",
+        "province": "Select your Province",
+        "city": "Select your City/Municipality",
+        "barangay": "Select your Barangay"
+      },
+      "idTypeOptions": {
+        "nationalId": "National ID",
+        "passport": "Passport",
+        "driversLicense": "Driver's License",
+        "votersId": "Voter's ID",
+        "philhealthId": "PhilHealth ID",
+        "sssId": "SSS ID",
+        "umid": "UMID"
+      },
+      "voterStatusOptions": {
+        "notRegistered": "Not Registered",
+        "registered": "Registered",
+        "deceased": "Deceased",
+        "transferred": "Transferred"
+      },
+      "messages": {
+        "draftLoadedTitle": "Draft Loaded",
+        "draftLoaded": "Your previous draft has been loaded",
+        "draftSavedTitle": "Draft Saved",
+        "draftSaved": "Draft saved successfully!",
+        "draftClearedTitle": "Draft Cleared",
+        "draftCleared": "Draft data has been cleared",
+        "duplicateWarning": "Found {{count}} potential duplicate(s). Please verify this is not a duplicate entry.",
+        "invalidFileType": "Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.",
+        "fileTooLarge": "File size must be less than 5MB",
+        "uploadSuccessTitle": "Photo Uploaded",
+        "uploadSuccess": "Profile photo has been uploaded successfully",
+        "loadingResident": "Loading resident data...",
+        "loadingReferenceData": "Loading reference data...",
+        "duplicatesFound": "Similar residents found:",
+        "unsavedChanges": "You have unsaved changes. Are you sure you want to leave? Your progress will not be saved.",
+        "unsavedChangesEdit": "Any unsaved changes will be lost. Are you sure you want to leave?",
+        "draftSaveError": "Failed to save draft. Please try again.",
+        "createSuccess": "Resident registered successfully!",
+        "updateSuccess": "Resident updated successfully!",
+        "createError": "Failed to save resident. Please try again.",
+        "updateError": "Failed to update resident. Please try again.",
+        "validationError": "Validation failed: {{errors}}",
+        "networkError": "Unable to connect to server. Please check your connection.",
+        "notFound": "Resident not found",
+        "invalidId": "The resident ID provided is invalid.",
+        "loadError": "Unable to load resident data."
+      },
+      "addTitle": "Add New Resident",
+      "editTitle": "Edit Resident Profile",
+      "civilStatusOptions": {
+        "single": "Single",
+        "liveIn": "Live-in",
+        "married": "Married",
+        "widowed": "Widowed",
+        "divorced": "Divorced",
+        "separated": "Separated",
+        "annulled": "Annulled",
+        "preferNotToSay": "Prefer not to say"
+      },
+      "educationalAttainmentEnumOptions": {
+        "noFormalEducation": "No Formal Education",
+        "elementaryUndergraduate": "Elementary Undergraduate",
+        "elementaryGraduate": "Elementary Graduate",
+        "highSchoolUndergraduate": "High School Undergraduate",
+        "highSchoolGraduate": "High School Graduate",
+        "collegeUndergraduate": "College Undergraduate",
+        "collegeGraduate": "College Graduate",
+        "postGraduate": "Post Graduate (MA/MS/PhD)",
+        "vocational": "Vocational/Technical Course",
+        "other": "Other"
+      },
+      "genderOptions": {
+        "male": "Male",
+        "female": "Female",
+        "nonBinary": "Non-binary",
+        "preferNotToSay": "Prefer not to say"
+      },
+      "educationalAttainmentOptions": {
+        "noFormalEducation": "No Formal Education",
+        "elementaryUndergraduate": "Elementary Undergraduate",
+        "elementaryGraduate": "Elementary Graduate",
+        "highSchoolUndergraduate": "High School Undergraduate",
+        "highSchoolGraduate": "High School Graduate",
+        "collegeUndergraduate": "College Undergraduate",
+        "collegeGraduate": "College Graduate",
+        "postGraduate": "Post Graduate (MA/MS/PhD)",
+        "vocational": "Vocational/Technical Course",
+        "other": "Other"
+      },
+      "employmentStatusOptions": {
+        "employed": "Employed",
+        "unemployed": "Unemployed",
+        "selfEmployed": "Self-Employed",
+        "retired": "Retired",
+        "student": "Student",
+        "overseasWorker": "Overseas Filipino Worker (OFW)"
+      },
+      "religionOptions": {
+        "catholic": "Catholic",
+        "iglesiaNiCristo": "Iglesia ni Cristo",
+        "evangelical": "Evangelical",
+        "protestant": "Protestant",
+        "islam": "Islam",
+        "buddhist": "Buddhist",
+        "hindu": "Hindu",
+        "seventhDayAdventist": "Seventh-day Adventist",
+        "jehovahsWitness": "Jehovah's Witness",
+        "bornAgainChristian": "Born Again Christian",
+        "orthodox": "Orthodox",
+        "judaism": "Judaism",
+        "atheist": "Atheist",
+        "aglipayan": "Aglipayan",
+        "preferNotToSay": "Prefer not to say",
+        "other": "Other"
+      },
+      "options": {
+        "selectGender": "Select Gender",
+        "selectCivilStatus": "Select Civil Status",
+        "selectEmploymentStatus": "Select Employment Status",
+        "selectIdType": "Select ID Type",
+        "selectSuffix": "Select Suffix",
+        "selectPurok": "Select Purok"
+      },
+      "specialClassifications": {
+        "title": "Special Classifications",
+        "description": "Check all that apply:",
+        "seniorCitizen": "Senior Citizen (60+)",
+        "personWithDisability": "Person with Disability",
+        "indigenousPeople": "Indigenous People",
+        "fourPsBeneficiary": "4Ps Beneficiary",
+        "disabilityType": "Disability Type",
+        "indigenousGroup": "Indigenous Group",
+        "fourPsHouseholdId": "4Ps Household ID",
+        "disabilityTypePlaceholder": "Specify type of disability...",
+        "indigenousGroupPlaceholder": "Specify indigenous group...",
+        "fourPsHouseholdIdPlaceholder": "Enter 4Ps Household ID..."
+      },
+      "profilePhoto": {
+        "upload": "Upload Profile Photo",
+        "clickToBrowse": "Click to browse or drag and drop",
+        "uploadError": "Failed to upload image."
+      },
+      "validation": {
+        "required": "This field is required",
+        "email": "Please enter a valid email address",
+        "minLength": "Must be at least {{min}} characters",
+        "maxLength": "Must be no more than {{max}} characters",
+        "invalidDate": "Please enter a valid date",
+        "invalidPhone": "Please enter a valid phone number"
+      },
+      "error": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "birthDateRequired": "Birth date is required",
+        "birthPlaceRequired": "Birth place is required",
+        "birthDateFuture": "Birth date cannot be in the future",
+        "agePositive": "Age must be a positive number"
+      }
+    },
+    "title": "Resident Management",
+    "addNew": "Add New Resident",
+    "search": "Search residents by name or address...",
+    "statistics": {
+      "title": "Statistics Overview",
+      "totalResidents": "Total Residents",
+      "pwd": "PWD",
+      "seniorCitizens": "Senior Citizens",
+      "children": "Children"
+    },
+    "table": {
+      "headers": {
+        "resident": "Resident",
+        "contact": "Contact Information",
+        "address": "Address",
+        "category": "Category",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "noResults": "No residents found",
+      "noResultsSearch": "No residents found matching \"{{searchTerm}}\"",
+      "yearsOld": "years old"
+    },
+    "actions": {
+      "view": "View resident details",
+      "edit": "Edit resident",
+      "delete": "Deactivate resident",
+      "deleting": "Deactivating..."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "deceased": "Deceased",
+      "transferred": "Transferred"
+    },
+    "categories": {
+      "regular": "Regular",
+      "seniorCitizen": "Senior Citizen",
+      "pwd": "PWD",
+      "fourPs": "4Ps",
+      "householdHead": "Household Head",
+      "indigenous": "Indigenous"
+    },
+    "messages": {
+      "loading": "Loading residents...",
+      "loadError": "Failed to load residents. Please try again.",
+      "statisticsError": "Failed to load statistics.",
+      "createError": "Failed to create resident. Please try again.",
+      "updateError": "Failed to update resident. Please try again.",
+      "deleteConfirm": "Are you sure you want to deactivate this resident? This will change their status to inactive.",
+      "deleteSuccess": "Resident deactivated successfully",
+      "deleteError": "Failed to deactivate resident. Please try again."
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+
+  "barangayOfficials" : {
+    "title": "Barangay Officials",
+    "addNew": "Add New Official",
+    "search": "Search officials...",
+    "statistics": {
+      "title": "Officials Overview",
+      "totalOfficials": "Total Officials",
+      "upcomingElections": "Upcoming Elections"
+    },
+    "table": {
+      "headers": {
+        "official": "Official",
+        "position": "Position",
+        "contact": "Contact",
+        "term": "Term",
+        "status": "Status",
+        "committee": "Committee",
+        "actions": "Actions"
+      },
+      "noResults": "No official found",
+      "noResultsSearch": "No official found matching \"{{searchTerm}}\"",
+      "yearsOld": "years old"
+    },
+    "actions": {
+      "view": "View official details",
+      "edit": "Edit official",
+      "delete": "Deactivate official",
+      "deleting": "Deactivating..."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended",
+      "terminated": "Terminated",
+      "deceased": "Deceased"
+    },
+    "positions": {
+      "barangayCaptain": "Barangay Captain",
+      "barangaySecretary": "Barangay Secretary", 
+      "barangayTreasurer": "Barangay Treasurer",
+      "kagawad": "Kagawad",
+      "skChairperson": "SK Chairperson",
+      "skKagawad": "SK Kagawad",
+      "barangayClerk": "Barangay Clerk",
+      "barangayTanod": "Barangay Tanod"
+    },
+    "committeeAssignments": {
+      "health": "Health",
+      "education": "Education",
+      "publicSafety": "Public Safety", 
+      "environment": "Environment",
+      "peaceAndOrder": "Peace and Order",
+      "sportsAndRecreation": "Sports and Recreation",
+      "womenAndFamily": "Women and Family",
+      "seniorCitizens": "Senior Citizens"
+    },
+    "messages": {
+      "loading": "Loading officials...",
+      "loadError": "Failed to load officials. Please try again.",
+      "statisticsError": "Failed to load statistics.",
+      "createError": "Failed to create official. Please try again.",
+      "updateError": "Failed to update official. Please try again.",
+      "deleteConfirm": "Are you sure you want to deactivate this official? This will change their status to inactive.",
+      "deleteSuccess": "official deactivated successfully",
+      "deleteError": "Failed to deactivate official. Please try again."
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+
+    "form": {
+      "addTitle": "Add New Resident",
+      "editTitle": "Edit Resident Profile",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "contactInfo": "Contact Information",
+        "familyInfo": "Family Information",
+        "governmentIds": "Government IDs & Documents",
+        "healthMedical": "Health & Medical Information",
+        "profilePhoto": "Profile Photo"
+      },
+      "residentSearch": {
+        "placeholder": "Search residents...",
+        "searching": "Searching...",
+        "noPhone": "No phone",
+        "noResults": "No residents found matching \"{{searchTerm}}\""
+      },
+      "fields": {
+        "residentSearch": "Search Existing Resident as Official",
+        "residentId": "Resident ID",
+        "prefix": "Prefix",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "middleName": "Middle Name",
+        "suffix": "Suffix",
+        "birthDate": "Birth Date",
+        "gender": "Gender",
+        "civilStatus": "Civil Status",
+        "nationality": "Nationality",
+        "employmentStatus": "Employment Status",
+        "educationalAttainment": "Educational Attainment",
+        "mobileNumber": "Mobile Number",
+        "landlineNumber": "Landline Number",
+        "emailAddress": "Email Address",
+        "completeAddress": "Complete Address",
+        "position": "Position",
+        "committeeAssignment": "Committee Assignment",
+        "termStart": "Term Start",
+        "termEnd": "Term End"
+      },
+      "placeholders": {
+        "residentSearch": "Search resident by name, id...",
+        "residentId": "Enter resident ID",
+        "firstName": "Enter first name here...",
+        "lastName": "Enter last name here...",
+        "middleName": "Leave blank if not applicable",
+        "nationality": "Enter nationality...",
+        "educationalAttainment": "e.g. High School Graduate, College Graduate...",
+        "mobileNumber": "+63 XXX XXX XXXX",
+        "landlineNumber": "(02) XXXX-XXXX",
+        "emailAddress": "resident@gmail.com",
+        "completeAddress": "Enter complete address...",
+        "position": "Select Position",
+        "committeeAssignment": "Select Committee Assignment",
+        "prefix": "Select prefix (e.g., Hon.)",
+        "gender": "Select gender",
+        "selectCivilStatus": "Select civil status"
+      },
+      "options": {
+        "selectGender": "Select Gender",
+        "selectCivilStatus": "Select Civil Status",
+        "selectEmploymentStatus": "Select Employment Status",
+        "selectIdType": "Select ID Type",
+        "selectSuffix": "Select Suffix"
+      },
+      "actions": {
+        "saveDraft": "Save Draft",
+        "savingDraft": "Saving Draft...",
+        "cancel": "Cancel",
+        "register": "Register Resident",
+        "update": "Update Resident",
+        "registering": "Saving...",
+        "updating": "Updating...",
+        "close": "Close"
+      },
+      "validation": {
+        "invalidUUID": "Invalid UUID",
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "birthDateRequired": "Birth date is required",
+        "termStartRequired": "Term start date is required",
+        "termEndRequired": "Term end date is required",
+        "completeAddressRequired": "Complete Address is required"
+      },
+      "error": {
+      },
+      "messages": {
+        "loadingOfficial": "Loading official data...",
+        "loadingReferenceData": "Loading reference data...",
+        "duplicateWarning": "Found {{count}} potential duplicate(s). Please verify this is not a duplicate entry.",
+        "duplicatesFound": "Similar officials found:",
+        "unsavedChanges": "You have unsaved changes. Are you sure you want to leave? Your progress will not be saved.",
+        "unsavedChangesEdit": "Any unsaved changes will be lost. Are you sure you want to leave?",
+        "draftSaved": "Draft saved successfully!",
+        "draftSaveError": "Failed to save draft. Please try again.",
+        "createSuccess": "Official registered successfully!",
+        "updateSuccess": "Official updated successfully!",
+        "createError": "Failed to save official. Please try again.",
+        "updateError": "Failed to update official. Please try again.",
+        "validationError": "Validation failed: {{errors}}",
+        "networkError": "Unable to connect to server. Please check your connection.",
+        "notFound": "Official not found",
+        "invalidId": "The official ID provided is invalid.",
+        "loadError": "Unable to load official data."
+      }
+    }
+  }, 
+  "households": {
+    "title": "Household Management",
+    "addNew": "Add New Household",
+    "search": "Enter number, address, or head of family...",
+    "statistics": {
+      "title": "Household Statistics",
+      "totalHouseholds": "Total Households",
+      "activeHouseholds": "Active Households",
+      "fourPsBeneficiaries": "4Ps Beneficiaries",
+      "indigentFamilies": "Indigent Families",
+      "withSeniorCitizens": "With Senior Citizens",
+      "withPWD": "With PWD Members",
+      "withElectricity": "With Electricity",
+      "withWaterSupply": "With Water Supply",
+      "withInternetAccess": "With Internet Access"
+    },
+    "table": {
+      "headers": {
+        "householdNumber": "Household Number",
+        "headOfFamily": "Head of Family",
+        "address": "Address",
+        "members": "Members",
+        "type": "Type",
+        "classifications": "Classifications",
+        "actions": "Actions",
+        "headAndAddress": "Head & Address",
+        "membersAndIncome": "Members & Income",
+        "programs": "Programs",
+        "status": "Status"
+      },
+      "noHouseholdsFound": "No households found. Try adjusting your search or add a new household.",
+      "income": "Income",
+      "none": "None",
+      "noResults": "No households found",
+      "noResultsSearch": "No households found matching \"{{searchTerm}}\"",
+      "members": "{{count}} member",
+      "members_plural": "{{count}} members",
+      "noHead": "No Head Assigned"
+    },
+    "actions": {
+      "view": "View household details",
+      "edit": "Edit household",
+      "delete": "Delete household",
+      "deleting": "Deleting..."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "transferred": "Transferred"
+    },
+    "types": {
+      "NUCLEAR": "Nuclear Family",
+      "EXTENDED": "Extended Family",
+      "SINGLE": "Single Person",
+      "SINGLE_PARENT": "Single Parent",
+      "OTHER": "Other"
+    },
+    "houseTypes": {
+      "CONCRETE": "Concrete",
+      "SEMI_CONCRETE": "Semi-Concrete",
+      "WOOD": "Wood",
+      "BAMBOO": "Bamboo",
+      "MIXED": "Mixed Materials"
+    },
+    "ownershipStatus": {
+      "OWNED": "Owned",
+      "RENTED": "Rented",
+      "SHARED": "Shared",
+      "INFORMAL_SETTLER": "Informal Settler"
+    },
+    "incomeRanges": {
+      "BELOW_10000": "Below ₱10,000",
+      "RANGE_10000_25000": "₱10,000 - ₱25,000",
+      "RANGE_25000_50000": "₱25,000 - ₱50,000",
+      "RANGE_50000_100000": "₱50,000 - ₱100,000",
+      "ABOVE_100000": "Above ₱100,000"
+    },
+    "relationships": {
+      "HEAD": "Head",
+      "SPOUSE": "Spouse",
+      "SON": "Son",
+      "DAUGHTER": "Daughter",
+      "FATHER": "Father",
+      "MOTHER": "Mother",
+      "BROTHER": "Brother",
+      "SISTER": "Sister",
+      "GRANDFATHER": "Grandfather",
+      "GRANDMOTHER": "Grandmother",
+      "GRANDSON": "Grandson",
+      "GRANDDAUGHTER": "Granddaughter",
+      "UNCLE": "Uncle",
+      "AUNT": "Aunt",
+      "NEPHEW": "Nephew",
+      "NIECE": "Niece",
+      "COUSIN": "Cousin",
+      "IN_LAW": "In-law",
+      "BOARDER": "Boarder",
+      "OTHER": "Other"
+    },
+    "classifications": {
+      "fourPsBeneficiary": "4Ps Beneficiary",
+      "indigentFamily": "Indigent Family",
+      "hasSeniorCitizen": "Has Senior Citizen",
+      "hasPwdMember": "Has PWD Member",
+      "hasElectricity": "Has Electricity",
+      "hasWaterSupply": "Has Water Supply",
+      "hasInternetAccess": "Has Internet Access"
+    },
+    "messages": {
+      "loading": "Loading households...",
+      "loadError": "Failed to load households. Please try again.",
+      "statisticsError": "Failed to load statistics.",
+      "createError": "Failed to create household. Please try again.",
+      "updateError": "Failed to update household. Please try again.",
+      "deleteConfirm": "Are you sure you want to delete this household? This action cannot be undone.",
+      "deleteSuccess": "Household deleted successfully",
+      "deleteError": "Failed to delete household. Please try again.",
+      "deleteErrorTitle": "Delete Error",
+      "notFound": "Household not found",
+      "invalidId": "The household ID provided is invalid.",
+      "loadingHousehold": "Loading household data...",
+      "networkError": "Unable to connect to server. Please check your connection."
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "form": {
+      "addTitle": "Add New Household Profile",
+      "editTitle": "Edit Household Profile",
+      "viewTitle": "View Household Profile",
+      "sections": {
+        "headInfo": "Household Head Information",
+        "basicInfo": "Basic Information",
+        "addressInfo": "Address Information",
+        "economicInfo": "Economic Information",
+        "housingInfo": "Housing Information",
+        "utilitiesInfo": "Utilities & Access",
+        "classificationsInfo": "Classifications",
+        "membersInfo": "Household Members",
+        "additionalInfo": "Additional Information",
+        "utilitiesAccess": "Utilities Access"
+      },
+      "residentSearch": {
+        "placeholder": "Search residents...",
+        "searching": "Searching...",
+        "noPhone": "No phone",
+        "noResults": "No residents found matching \"{{searchTerm}}\""
+      },  
+      "membersSection": {
+        "addMembersFromResidents": "Add Members from Residents",
+        "searchPlaceholder": "Enter name, ID, or phone number to search for members",
+        "householdMembers": "Household Members",
+        "relationshipToHead": "Relationship to Head",
+        "residentNotFound": "Resident not found",
+        "noMembersYet": "No members added yet. Search and select residents to add as household members.",
+        "totalMembers": "Total members"
+      },      
+      "fields": {
+        "householdNumber": "Household Number",
+        "householdType": "Household Type",
+        "headResident": "Head of Family",
+        "houseNumber": "House/Unit Number",
+        "streetSitio": "Street/Sitio",
+        "barangay": "Barangay",
+        "completeAddress": "Complete Address",
+        "monthlyIncome": "Monthly Income Range",
+        "primaryIncomeSource": "Primary Income Source",
+        "fourPsBeneficiary": "4Ps Beneficiary",
+        "indigentFamily": "Indigent Family",
+        "hasSeniorCitizen": "Has Senior Citizen Member",
+        "hasPwdMember": "Has PWD Member",
+        "houseType": "House Type",
+        "ownershipStatus": "Ownership Status",
+        "hasElectricity": "Has Electricity",
+        "hasWaterSupply": "Has Water Supply",
+        "hasInternetAccess": "Has Internet Access",
+        "members": "Household Members",
+        "memberName": "Member Name",
+        "relationship": "Relationship to Head",
+        "remarks": "Remarks/Additional Notes"
+      },
+      "placeholders": {
+        "householdNumber": "Auto-generated if left blank",
+        "houseNumber": "e.g. 123, Blk 4 Lot 5",
+        "streetSitio": "e.g. Rizal Street, Sitio Maligaya",
+        "completeAddress": "Enter complete household address...",
+        "primaryIncomeSource": "e.g. Employment, Business, Farming...",
+        "remarks": "Enter any additional information or notes...",
+        "searchMembers": "Search residents to add as members...",
+        "selectHeadResident": "Select head of family...",
+        "selectRelationship": "Select relationship...",
+        "barangay": "Enter barangay name"
+      },
+      "options": {
+        "selectHouseholdType": "Select Household Type",
+        "selectIncomeRange": "Select Income Range",
+        "selectHouseType": "Select House Type",
+        "selectOwnershipStatus": "Select Ownership Status",
+        "selectBarangay": "Select Barangay",
+        "selectHeadResident": "Select Head of Family",
+        "selectRelationship": "Select Relationship"
+      },
+      "actions": {
+        "saveDraft": "Save Draft",
+        "savingDraft": "Saving Draft...",
+        "cancel": "Cancel",
+        "save": "Save Household",
+        "update": "Update Household",
+        "saving": "Saving...",
+        "updating": "Updating...",
+        "close": "Close",
+        "edit": "Edit Household",
+        "addMember": "Add Member",
+        "removeMember": "Remove Member",
+        "selectMember": "Select Member"
+      },
+      "validation": {
+        "required": "This field is required",
+        "householdNumberRequired": "Household number is required",
+        "houseNumberRequired": "House number is required",
+        "streetSitioRequired": "Street/Sitio is required",
+        "barangayRequired": "Barangay is required",
+        "completeAddressRequired": "Complete address is required",
+        "minLength": "Must be at least {{min}} characters",
+        "maxLength": "Must be no more than {{max}} characters",
+        "invalidFormat": "Invalid format"
+      },
+      "error": {
+        "householdNumberRequired": "Household number is required",
+        "houseNumberRequired": "House number is required",
+        "streetSitioRequired": "Street/Sitio is required",
+        "barangayRequired": "Barangay is required",
+        "completeAddressRequired": "Complete address is required"
+      },
+      "messages": {
+        "loadingHousehold": "Loading household data...",
+        "loadingMembers": "Loading household members...",
+        "duplicateWarning": "Found {{count}} potential duplicate household(s). Please verify this is not a duplicate entry.",
+        "duplicatesFound": "Similar households found:",
+        "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
+        "draftSaved": "Draft saved successfully!",
+        "draftSaveError": "Failed to save draft. Please try again.",
+        "createSuccess": "Household created successfully!",
+        "updateSuccess": "Household updated successfully!",
+        "createError": "Failed to save household. Please try again.",
+        "updateError": "Failed to update household. Please try again.",
+        "createErrorTitle": "Create Error",
+        "updateErrorTitle": "Update Error",
+        "validationError": "Validation failed: {{errors}}",
+        "networkError": "Unable to connect to server. Please check your connection.",
+        "notFound": "Household not found",
+        "invalidId": "The household ID provided is invalid.",
+        "loadError": "Unable to load household data.",
+        "memberAlreadyExists": "This resident is already a member of this household",
+        "headCannotBeRemoved": "The head of family cannot be removed. Please assign a new head first.",
+        "noMembersSelected": "Please select at least one household member"
+      },
+      "members": {
+        "title": "Household Members",
+        "noMembers": "No members assigned to this household",
+        "addMember": "Add Member",
+        "removeMember": "Remove Member",
+        "memberCount": "{{count}} member",
+        "memberCount_plural": "{{count}} members",
+        "headOfFamily": "Head of Family",
+        "relationship": "Relationship",
+        "age": "Age",
+        "gender": "Gender",
+        "actions": "Actions",
+        "loadError": "Failed to load household members",
+        "selectResidentAndRelationship": "Please select a resident and relationship",
+        "addError": "Failed to add household member",
+        "removeError": "Failed to remove household member",
+        "addNewMember": "Add New Member",
+        "relationshipToHead": "Relationship to Household Head",
+        "noMembersDescription": "Click \"Add Member\" to start adding family members.",
+        "memberName": "Name"
+      },
+      "confirmations": {
+        "removeMember": "Are you sure you want to remove this member from the household?",
+        "changeHead": "Are you sure you want to change the head of this household?",
+        "deleteHousehold": "Are you sure you want to delete this household? This action cannot be undone."
+      },
+      "headSection": {
+        "searchExistingResident": "Search Existing Resident as Head",
+        "searchPlaceholder": "Enter name, ID, or phone number",
+        "selectedHead": "Selected Household Head",
+        "addNewResident": "Add New Resident as Head",
+        "removeHead": "Remove household head",
+        "householdHead": "Household Head",
+        "noContact": "No contact",
+        "or": "OR",
+        "table": {
+          "name": "Name",
+          "contact": "Contact",
+          "role": "Role",
+          "actions": "Actions"
+        }
+      }
+    },
+    "view": {
+      "householdInformation": "Household Information",
+      "addressInformation": "Address Information",
+      "economicInformation": "Economic Information",
+      "housingInformation": "Housing Information",
+      "householdMembers": "Household Members",
+      "householdClassification": "Household Classification",
+      "additionalInformation": "Additional Information",
+      "utilitiesAccess": "Utilities Access",
+      "totalMembers": "Total Members",
+      "noHeadAssigned": "No Head Assigned",
+      "notSpecified": "Not specified",
+      "noAdditionalRemarks": "No additional remarks",
+      "head": "Head",
+      "membersTable": {
+        "householdHead": "Household Head",
+        "useFullDetails": "Use full resident details if needed",
+        "otherMembers": "Other Members",
+        "name": "Name",
+        "contact": "Contact",
+        "relationship": "Relationship",
+        "noContact": "N/A",
+        "noAdditionalMembers": "No additional members registered",
+        "noMembersYet": "No members registered yet",
+        "totalHouseholdSize": "Total household size"
+      }
+    },
+    "common": {
+      "errors": {
+        "unableToLoadData": "Unable to load data.",
+        "resourceNotFound": "The requested resource was not found.",
+        "networkError": "Unable to connect to server. Please check your connection.",
+        "genericError": "An error occurred while loading data.",
+        "notFound": "Not Found",
+        "error": "Error",
+        "loading": "Loading..."
+    },
+      "actions": {
+        "goBack": "Go Back",
+        "tryAgain": "Try Again"
+      }
+    }
+  },
+  "helpDesk": {
+    "appointmentsForm":{
+      "fields": {
+        "fullName": "Full Name",
+        "emailAddress": "Email Address",
+        "contactNumber": "Contact Number",
+        "completeAddress": "Complete Address",
+        "subject": "Subject",
+        "department": "Department",
+        "purpose": "Purpose",
+        "date": "Date",
+        "time": "Time", 
+        "additionalNotes": "Additional Notes"
+      },
+      "placeholders": {
+        "fullName": "Enter your full name...",
+        "emailAddress": "Enter your email address...",
+        "contactNumber": "Enter contact number...",
+        "completeAddress": "Enter complete address...", 
+        "subject": "Subject",
+        "department": "Select Department",
+        "purpose": "Enter purpose of appointment...",
+        "time": "Select appointment time",
+        "additionalNotes": "Enter any additional notes..."
+      },
+      "validation": {
+        "dateRequired": "Date is required",
+        "timeRequired": "Time is required",
+        "fullNameRequired": "Full name is required",
+        "contactMaxChar": "Contact number must not exceed 11 characters",
+        "completeAddressRequired": "Complete address is required",
+        "invalidDepartment": "Please select a valid department",
+        "dateNotInThePast": "Date must not be in the past",
+        "dateInMM/DD/YYYY": "Date must be in MM/DD/YYYY format"
+      },
+      "messages": {
+        "createSuccess":"Appointment scheduled successfully!",
+        "createError":"Appointment schedule failed!",
+        "error" : "Schedule appointment failed",
+        "updateSuccess": "Appointment updated successfully!",
+        "updateError": "Appointment update failed!",
+        "deleteSuccess": "Appointment deleted successfully!",
+        "deleteError": "Appointment delete failed!"
+      }
+    },
+    "blotterForm":{
+      "fields": {
+        "involvement": "Involvement",
+        "typeOfIncident": "Type of Incident",
+        "dateOfIncident": "Date of Incident",
+        "timeOfIncident": "Time of Incident",
+        "locationOfIncident": "Location of Incident",
+        "incidentDescription": "Incident Description"
+      },
+      "placeholders": {
+        "involvement": "Select involvement",
+        "typeOfIncident": "Select incident Type",
+        "timeOfIncident": "Select incident Time",
+        "locationOfIncident": "Enter incident Location",
+        "incidentDescription": "Enter incident Description"
+      },
+      "buttons": {
+        "addNewPerson": "Add New Person"
+      },
+      "validation": {
+        "locationRequired": "Location of incident is required",
+        "invalidIncidentType": "Invalid incident type"
+      },
+      "messages" : {
+        "createSuccess":"Blotter filed successfully!",
+        "createError":"Blotter file failed!",
+        "error" : "File blotter failed",
+        "updateSuccess": "Blotter updated successfully!",
+        "updateError": "Blotter update failed!",
+        "deleteSuccess": "Blotter deleted successfully!",
+        "deleteError": "Blotter delete failed!"
+      }
+    },
+    "complaintsForm": {
+      "fields": {
+        "department": "Department",
+        "cCategory": "Complaint Category",
+        "subject": "Subject/Title",
+        "description": "Detailed Description",
+        "location": "Location (if applicable)"
+      },
+      "placeholders": {
+        "department": "Select a department",
+        "cCategory": "Select a category",
+        "subject": "Brief description of your complaint",
+        "description": "Please provide a detailed description of your complaint. Include what happened, when it happened, who was involved, and any other relevant information...",
+        "location": "Where did this issue occur?"    
+      },
+      "validation": {
+        "invalidDepartment": "Invalid department",
+        "invalidCategory": "Invalid complaint category"
+      },
+      "messages" : {
+        "createSuccess":"Complaint filed successfully!",
+        "createError":"Complaint file failed!",
+        "error" : "File Complain failed",
+        "updateSuccess": "Complaint updated successfully!",
+        "updateError": "Complaint update failed!",
+        "deleteSuccess": "Complaint deleted successfully!",
+        "deleteError": "Complaint delete failed!"
+      }
+    },
+    "suggestionsForm": {
+      "fields": {
+        "cCategory": "Suggestion Category",
+        "subject": "Suggestion Title",
+        "description": "Detailed Description",
+        "expectedBenefits": "Expected Benefits",
+        "implementationIdeas": "Implementation Ideas",
+        "resourcesNeeded": "Resourced Needed"
+      },
+      "placeholders": {
+        "cCategory": "Select a category",
+        "subject":"Brief description of your suggestion",
+        "description":"Please provide a detailed description of your complaint. Include what happened, when it happened, who was involved, and any other relevant information...",
+        "expectedBenefits": "What positive impacts will this suggestion have on the community?",
+        "implementationIdeas": "Do you have ideas on how this could be implemented?",
+        "resourcesNeeded": "What resources (budget, manpower, equipment) might be needed?"
+      },
+      "validation": {
+        "invalidCategory": "Invalid Category"
+      },
+      "messages" : {
+        "createSuccess":"Suggestion shared successfully!",
+        "createError":"Suggestion share failed!",
+        "error" : "Share Suggestion failed",
+        "updateSuccess": "Suggestion updated successfully!",
+        "updateError": "Suggestion update failed!",
+        "deleteSuccess": "Suggestion deleted successfully!",
+        "deleteError": "Suggestion delete failed!"
+      }
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "emailAddress": "Email Address",
+      "contactNumber": "Contact Number",
+      "completeAddress": "Complete Address",
+      "priority": "Priority"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name...",
+      "emailAddress": "Enter your email address...",
+      "contactNumber": "Enter contact number...",
+      "completeAddress": "Enter complete address...",
+      "priority": "Select priority"
+    },
+    "validation": {
+      "invalidEmailFormat": "Invalid email format",
+      "descriptionRequired": "Ticket description is required",
+      "subjectRequired": "Ticket subject is required",
+      "fullNameRequired": "Full name is required",
+      "contactLengthValidation": "Contact number must be in +63 XXX XXX XXXX format",
+      "completeAddressRequired": "Complete address is required",
+      "dateInMM/DD/YYYY": "Date must be in MM/DD/YYYY format",
+      "invalidTimeSlots": "Please select a valid time slot",
+      "invalidPriority": "Please select a valid priority"
+    },
+    "messages": {
+      "deleteSuccess": "Ticket deleted successfully!",
+      "deleteError": "Ticket delete failed!"
+    }
+  }
+}
+
+

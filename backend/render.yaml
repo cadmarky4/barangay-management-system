@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: lgu-management-system
+    env: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: APP_KEY
+        value: base64:VGhpc0lzQVNlY3VyZUxhcmF2ZWxBcHBsaWNhdGlvbktleQ==
+
+databases:
+  - name: lgu-management-db
+    plan: starter

@@ -1,0 +1,4 @@
+{
+    "i18next.i18nPaths": "/Users/johnmarkgatche/lgu-ims/frontend/src/i18/locales,/Users/johnmarkgatche/lgu-ims/backend/vendor/laravel/framework/src/Illuminate/Translation/lang",
+    "postman.settings.dotenv-detection-notification-visibility": false
+}

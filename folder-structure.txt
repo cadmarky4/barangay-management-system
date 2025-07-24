@@ -1,0 +1,106 @@
++---backend
+|   +---app
+|   |   +---Console
+|   |   |   \---Commands
+|   |   +---Exports
+|   |   +---Http
+|   |   |   \---Controllers
+|   |   |       \---Api
+|   |   +---Imports
+|   |   +---Models
+|   |   |   \---Schemas
+|   |   +---Providers
+|   |   \---Traits
+|   +---bootstrap
+|   |   \---cache
+|   +---config
+|   +---database
+|   |   +---factories
+|   |   +---migrations
+|   |   |   \---old
+|   |   \---seeders
+|   +---public
+|   |   \---storage
+|   |       +---profile_photos
+|   +---resources
+|   |   +---css
+|   |   +---js
+|   |   \---views
+|   +---routes
+|   +---storage
+|   |   +---app
+|   |   |   +---private
+|   |   |   \---public
+|   |   |       +---profile_photos
+|   |   |       \---public
+|   |   |           \---profile_photos
+|   |   +---framework
+|   |   |   +---cache
+|   |   |   |   \---data
+|   |   |   +---sessions
+|   |   |   +---testing
+|   |   |   \---views
+|   |   \---logs
+|   +---tests
+|   |   +---Feature
+|   |   \---Unit
+\---frontend
+    +---public
+    \---src
+        +---assets
+        +---components
+        |   +---activityLogs
+        |   |   \---_components
+        |   +---barangayOfficials
+        |   |   +---utils
+        |   |   +---_components
+        |   |   \---_hooks
+        |   +---dashboard
+        |   +---helpDesk
+        |   +---householdManagement
+        |   |   +---_components
+        |   |   +---_hooks
+        |   |   \---_utils
+        |   +---processDocument
+        |   |   +---_components
+        |   |   \---_hooks
+        |   +---projectsAndPrograms
+        |   +---reports
+        |   +---residentManagement
+        |   |   +---_components
+        |   |   |   \---view
+        |   |   |       \---sections
+        |   |   \---_hooks
+        |   +---userManagement
+        |   +---_auth
+        |   +---_global
+        |   |   \---components
+        |   +---_settings
+        |   \---__shared
+        +---contexts
+        +---hooks
+        +---i18
+        |   \---locales
+        +---services
+        |   +---activityLogs
+        |   +---dashboard
+        |   +---documents
+        |   +---helpDesk
+        |   |   +---appointments
+        |   |   +---blotters
+        |   |   +---complaints
+        |   |   \---suggestions
+        |   +---households
+        |   +---officials
+        |   +---projects
+        |   +---reports
+        |   +---residents
+        |   +---settings
+        |   +---users
+        |   \---__shared
+        |       +---_auth
+        |       +---_storage
+        |       +---_utilities
+        |       \---__hooks
+        +---utilities
+        \---utils

@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-smblue-50: #f3fff0;
+  --color-smblue-100: #8fdbc5;
+  --color-smblue-200: #64adc4;
+  --color-smblue-300: #4887b7;
+  --color-smblue-400: #367096;
+  --color-darktext: #2c332f;
+  --color-stats-card: #e4f0ed;
+}
+
+@custom-variant header-pre-mobile (@media (max-width: 864px));
+
+@layer base {
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    /* --color-darktext */
+    color: #2c332f;
+  }
+}
+
+@layer components {
+  .sidebar-link {
+    @apply flex items-center px-4 py-3 hover:bg-smblue-400/10 hover:text-smblue-400 transition-colors duration-200;
+  }
+
+  .sidebar-link.active {
+    @apply bg-smblue-400/20 text-smblue-400;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-lg p-6 shadow-sm border border-gray-100;
+  }
+
+  .quick-action-btn {
+    @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors duration-200 text-sm font-medium;
+  }
+}
+
+/* Print Styles */
+@media print {
+  /* Hide all elements by default */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Show only the print content */
+  .print\\:block {
+    display: block !important;
+  }
+  
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  .print\\:p-0 {
+    padding: 0 !important;
+  }
+  
+  .print\\:p-4 {
+    padding: 1rem !important;
+  }
+  
+  .print\\:border-0 {
+    border: none !important;
+  }
+  
+  /* Make print content visible */
+  .fixed.inset-0.bg-white.z-50,
+  .fixed.inset-0.bg-white.z-50 * {
+    visibility: visible;
+  }
+  
+  /* Remove fixed positioning for print */
+  .fixed.inset-0.bg-white.z-50 {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: white !important;
+    z-index: auto !important;
+  }
+  
+  /* Optimize for A4 paper */
+  @page {
+    size: A4;
+    margin: 0.5in;
+  }
+  
+  /* Ensure proper page breaks */
+  .bg-white.border-2.border-black {
+    page-break-inside: avoid;
+    border: 1px solid black !important;
+    padding: 2rem !important;
+  }
+  
+  /* Hide buttons when printing */
+  button {
+    display: none !important;
+  }
+  
+  /* Ensure text is black for printing */
+  .text-gray-800,
+  .text-gray-700,
+  .text-gray-600 {
+    color: black !important;
+  }
+  
+  /* Ensure borders are visible */
+  .border-t-2,
+  .border-b-2,
+  .border-black {
+    border-color: black !important;
+  }
+  
+  .border-b-2.border-black {
+    border-bottom: 2px solid black !important;
+  }
+}
