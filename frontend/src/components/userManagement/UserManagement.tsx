@@ -73,7 +73,7 @@ const UserManagement: React.FC = () => {
       
       // Check if it's a network error (backend not running)
       if ((err instanceof Error ? err.message : 'Unknown error')?.includes('fetch') || (err instanceof Error ? err.message : 'Unknown error')?.includes('Failed to fetch')) {
-        setError('Cannot connect to server. Please make sure the backend is running on http://127.0.0.1:8000');
+        setError('Cannot connect to server. Please make sure the backend is running on https://lgu-ims-backend.onrender.com');
       } else {
         setError((err instanceof Error ? err.message : 'Unknown error') || 'Failed to fetch users');
       }

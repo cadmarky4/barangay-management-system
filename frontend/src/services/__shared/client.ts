@@ -1,7 +1,7 @@
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { triggerLogout } from '@/services/__shared/_auth/auth-error-handler';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://lgu-ims-backend.onrender.com/api';
 
 // Create axios instance
 export const apiClient = axios.create({

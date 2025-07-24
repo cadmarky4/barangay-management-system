@@ -22,7 +22,7 @@ export const buildImageUrl = (filename: string | null, folder: string = 'residen
   }
   
   // Build the full URL from filename using Vite env variables
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://lgu-ims-backend.onrender.com';
   return `${baseUrl}/storage/public/${folder}/${filename}`;
 };
 

@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Call logout endpoint if token exists
       if (token) {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/auth/logout', {
+          const response = await fetch('https://lgu-ims-backend.onrender.com/api/auth/logout', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const parsedUser = JSON.parse(savedUser);
             
             // Validate token with backend
-            const response = await fetch('http://127.0.0.1:8000/api/auth/user', {
+            const response = await fetch('https://lgu-ims-backend.onrender.com/api/auth/user', {
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -182,7 +182,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
+      const response = await fetch('https://lgu-ims-backend.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch('http://127.0.0.1:8000/api/auth/register', {
+      const response = await fetch('https://lgu-ims-backend.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -292,7 +292,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!token) return;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/user', {
+      const response = await fetch('https://lgu-ims-backend.onrender.com/api/auth/user', {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

@@ -243,7 +243,7 @@ export function useResidentForm({ mode, residentId, onSuccess }: UseResidentForm
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('http://127.0.0.1:8000/api/upload', {
+        const response = await fetch('https://lgu-ims-backend.onrender.com/api/upload', {
           method: 'POST',
           body: formData,
           headers: {
