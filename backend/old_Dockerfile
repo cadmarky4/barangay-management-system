@@ -58,10 +58,6 @@ RUN echo '<VirtualHost *:80>\n\
 COPY startup.sh /usr/local/bin/startup.sh
 RUN chmod +x /usr/local/bin/startup.sh
 
-# Create cache table
-RUN php artisan cache:table || true
-RUN php artisan queue:table || true
-
 # Expose port
 EXPOSE 80
 

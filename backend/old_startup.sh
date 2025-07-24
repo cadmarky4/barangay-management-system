@@ -3,10 +3,6 @@
 # Wait a moment for any setup
 sleep 2
 
-# Create cache and queue tables if they don't exist
-php artisan cache:table 2>/dev/null || echo "Cache table already exists or creation failed"
-php artisan queue:table 2>/dev/null || echo "Queue table already exists or creation failed"
-
 # Clear caches
 php artisan config:clear
 php artisan cache:clear
