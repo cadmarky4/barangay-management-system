@@ -300,6 +300,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
+    
     // Agendas Management
     Route::prefix('agendas')->group(function () {
         Route::get('/statistics', [AgendaController::class, 'statistics']);

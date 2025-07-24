@@ -111,10 +111,47 @@ class DocumentController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $validationRules = DocumentSchema::getCreateValidationRules();
-            $validated = $request->validate($validationRules);
+            // Manual validation instead of schema-based validation
+            $validated = $request->validate([
+                'resident_id' => 'required|string|exists:residents,id',
+                'document_type' => 'required|string',
+                'purpose' => 'required|string|min:3',
+                'valid_id_presented' => 'required|string|min:3',
+                'priority' => 'nullable|string|in:low,medium,high,urgent',
+                'additional_details' => 'nullable|string',
+                'needed_date' => 'nullable|date|after:today',
+                'applicant_name' => 'nullable|string',
+                'processing_fee' => 'nullable|numeric|min:0',
+            ]);
+
+            // Set default values that your model expects
+            $documentData = array_merge($validated, [
+                'status' => 'pending',
+                'payment_status' => 'paid',
+                'request_date' => now(),
+                'processed_by' => \Illuminate\Support\Facades\Auth::id(),
+            ]);
+
+            // Handle field mapping from frontend to backend
+            if ($request->has('valid_id') && !$request->has('valid_id_presented')) {
+                $documentData['valid_id_presented'] = $request->valid_id;
+            }
             
-            $document = Document::create($validated);
+            if ($request->has('type') && !$request->has('document_type')) {
+                $documentData['document_type'] = $request->type;
+            }
+
+            // Set default document type if not provided
+            if (!isset($documentData['document_type'])) {
+                $documentData['document_type'] = 'BARANGAY_CLEARANCE';
+            }
+
+            // Set default priority if not provided
+            if (!isset($documentData['priority'])) {
+                $documentData['priority'] = 'medium';
+            }
+
+            $document = Document::create($documentData);
             $document->load([
                 'resident:id,first_name,last_name,middle_name,suffix,complete_address,mobile_number,email_address'
             ]);
@@ -125,7 +162,7 @@ class DocumentController extends Controller
                 'message' => 'Document created successfully'
             ], 201);
 
-        } catch (ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
@@ -134,7 +171,8 @@ class DocumentController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create document: ' . $e->getMessage()
+                'message' => 'Failed to create document: ' . $e->getMessage(),
+                'trace' => config('app.debug') ? $e->getTraceAsString() : null
             ], 500);
         }
     }
