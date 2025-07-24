@@ -1,21 +1,36 @@
 services:
   - type: web
-    name: lgu-management-system
+    name: lgu-ims-backend
     env: docker
-    plan: starter
+    plan: starter # or free
     dockerfilePath: ./Dockerfile
+    dockerContext: ./
     envVars:
+      - key: APP_NAME
+        value: LGU IMS
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
-      - key: LOG_CHANNEL
-        value: stderr
-      - key: DB_CONNECTION
-        value: pgsql
       - key: APP_KEY
-        value: base64:VGhpc0lzQVNlY3VyZUxhcmF2ZWxBcHBsaWNhdGlvbktleQ==
+        generateValue: true
+      - key: LOG_LEVEL
+        value: error
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lgu-ims-db
+          property: connectionString
 
 databases:
-  - name: lgu-management-db
-    plan: starter
+  - name: lgu-ims-db
+    plan: starter # or free
+    databaseName: lgu_ims
+    user: lgu_user
