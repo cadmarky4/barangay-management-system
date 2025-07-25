@@ -15,12 +15,10 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     zip \
     unzip \
-    sqlite3 \
-    libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql pdo_sqlite pdo_pgsql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,15 +29,10 @@ COPY . /var/www/html
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Create database directory and file
-RUN mkdir -p /var/www/html/database && \
-    touch /var/www/html/database/database.sqlite
-
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache \
-    && chmod 664 /var/www/html/database/database.sqlite
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Enable Apache rewrite module
 RUN a2enmod rewrite
@@ -58,10 +51,6 @@ RUN echo '<VirtualHost *:80>\n\
 # Create startup script
 COPY startup.sh /usr/local/bin/startup.sh
 RUN chmod +x /usr/local/bin/startup.sh
-
-# Create cache table
-RUN php artisan cache:table || true
-RUN php artisan queue:table || true
 
 # Expose port
 EXPOSE 80
