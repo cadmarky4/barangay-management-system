@@ -217,6 +217,85 @@ Route::get('/create-core-tables', function () {
     }
 });
 
+// Check superadmin user details
+Route::get('/check-superadmin', function () {
+    try {
+        $user = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+        
+        if ($user) {
+            return response()->json([
+                'status' => 'found',
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'status' => $user->status ?? 'null',
+                    'role' => $user->role ?? 'null',
+                    'created_at' => $user->created_at,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'not_found',
+                'message' => 'Superadmin user not found'
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+// Force fix superadmin account
+Route::get('/fix-superadmin', function () {
+    try {
+        // Delete existing superadmin if exists
+        \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->delete();
+        
+        // Create new active superadmin
+        $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
+            'name' => 'Super Administrator',
+            'username' => 'superadmin',
+            'email' => 'superadmin@barangay.gov.ph',
+            'password' => bcrypt('SuperAdmin123!'),
+            'role' => 'super_admin',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Verify the user was created properly
+        $user = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Superadmin account recreated successfully',
+            'user' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'status' => $user->status,
+                'role' => $user->role
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
 // Activate superadmin account
 Route::get('/activate-superadmin', function () {
     try {
