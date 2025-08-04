@@ -32,30 +32,94 @@ Route::get('/check-tables', function () {
     }
 });
 
-// Force create migrations table and run migrations
-Route::get('/force-setup', function () {
+// Create tables in correct order without foreign keys
+Route::get('/create-tables-step-by-step', function () {
     try {
-        // Create migrations table if it doesn't exist
+        // Step 1: Drop all tables
+        \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE');
+        \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
+        
+        // Step 2: Create migrations table
         \Illuminate\Support\Facades\DB::statement("
-            CREATE TABLE IF NOT EXISTS migrations (
+            CREATE TABLE migrations (
                 id SERIAL PRIMARY KEY,
                 migration VARCHAR(255) NOT NULL,
                 batch INTEGER NOT NULL
             )
         ");
         
-        // Run fresh migrations
-        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+        // Step 3: Run migrations without foreign key checks
+        $migrationFiles = glob(database_path('migrations/*.php'));
+        sort($migrationFiles); // Ensure proper order
         
-        // Run seeds
+        $batch = 1;
+        $createdTables = [];
+        
+        foreach ($migrationFiles as $file) {
+            $migrationName = basename($file, '.php');
+            
+            try {
+                // Skip if already processed
+                $exists = \Illuminate\Support\Facades\DB::table('migrations')
+                    ->where('migration', $migrationName)
+                    ->exists();
+                    
+                if (!$exists) {
+                    // Include and run migration
+                    include_once $file;
+                    
+                    // Get the class name from the file
+                    $className = \Illuminate\Support\Str::studly(implode('_', array_slice(explode('_', $migrationName), 4)));
+                    
+                    if (class_exists($className)) {
+                        $migration = new $className;
+                        $migration->up();
+                        
+                        // Record in migrations table
+                        \Illuminate\Support\Facades\DB::table('migrations')->insert([
+                            'migration' => $migrationName,
+                            'batch' => $batch
+                        ]);
+                        
+                        $createdTables[] = $migrationName;
+                    }
+                }
+            } catch (\Exception $e) {
+                // Skip foreign key errors for now
+                if (!str_contains($e->getMessage(), 'does not exist')) {
+                    throw $e;
+                }
+                $createdTables[] = $migrationName . ' (skipped foreign keys)';
+            }
+        }
+        
+        // Step 4: Now add foreign keys in a second pass
+        foreach ($migrationFiles as $file) {
+            $migrationName = basename($file, '.php');
+            
+            try {
+                include_once $file;
+                $className = \Illuminate\Support\Str::studly(implode('_', array_slice(explode('_', $migrationName), 4)));
+                
+                if (class_exists($className)) {
+                    $migration = new $className;
+                    // Try to run up() again to add foreign keys
+                    $migration->up();
+                }
+            } catch (\Exception $e) {
+                // Ignore errors on second pass
+            }
+        }
+        
+        // Step 5: Seed the database
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         
-        // Check results
         $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
         
         return response()->json([
             'status' => 'success',
-            'message' => 'Database setup completed',
+            'message' => 'Tables created step by step',
+            'created_tables' => $createdTables,
             'user_count' => $userCount,
         ]);
         
@@ -64,6 +128,91 @@ Route::get('/force-setup', function () {
             'status' => 'failed',
             'error' => $e->getMessage(),
             'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
+// Simple approach - create core tables manually
+Route::get('/create-core-tables', function () {
+    try {
+        // Drop and recreate everything
+        \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE');
+        \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
+        
+        // Create users table manually
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE users (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                name VARCHAR(255),
+                username VARCHAR(255) UNIQUE NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                role VARCHAR(255) DEFAULT \'user\',
+                status VARCHAR(255) DEFAULT \'active\',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                deleted_at TIMESTAMP NULL
+            )
+        ');
+        
+        // Create residents table manually
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE residents (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                middle_name VARCHAR(255),
+                suffix VARCHAR(255),
+                complete_address TEXT,
+                mobile_number VARCHAR(255),
+                email_address VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                deleted_at TIMESTAMP NULL
+            )
+        ');
+        
+        // Create documents table manually
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE documents (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                resident_id UUID,
+                document_type VARCHAR(255) NOT NULL,
+                purpose TEXT,
+                status VARCHAR(255) DEFAULT \'pending\',
+                valid_id_presented VARCHAR(255),
+                processing_fee DECIMAL(10,2) DEFAULT 50.00,
+                payment_status VARCHAR(255) DEFAULT \'paid\',
+                priority VARCHAR(255) DEFAULT \'medium\',
+                request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+        
+        // Seed a test user
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+            'name' => 'Super Admin',
+            'username' => 'superadmin',
+            'email' => 'superadmin@barangay.gov.ph',
+            'password' => bcrypt('SuperAdmin123!'),
+            'role' => 'super_admin',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Core tables created successfully',
+            'user_count' => $userCount,
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
         ], 500);
     }
 });
@@ -89,54 +238,5 @@ Route::get('/db-status', function () {
             'connection_name' => config('database.default'),
             'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'No',
         ], 500);
-    }
-});
-
-// Force run migrations
-Route::get('/run-migrations', function () {
-    try {
-        // Run migrations
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        
-        // Seed database if empty
-        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
-        if ($userCount === 0) {
-            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        }
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Migrations and seeding completed',
-            'user_count' => \Illuminate\Support\Facades\DB::table('users')->count(),
-        ]);
-        
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'failed',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-});
-
-// Create test user without using User model
-Route::get('/create-test-user', function () {
-    try {
-        $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
-            'name' => 'Test Admin',
-            'username' => 'testadmin', 
-            'email' => 'test@admin.com',
-            'password' => bcrypt('password123'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        
-        return response()->json([
-            'message' => 'Test user created successfully',
-            'user_id' => $userId,
-            'username' => 'testadmin',
-            'password' => 'password123'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()]);
     }
 });
