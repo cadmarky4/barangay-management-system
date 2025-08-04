@@ -345,7 +345,7 @@ Route::get('/db-status', function () {
             'status' => 'failed',
             'error' => $e->getMessage(),
             'connection_name' => config('database.default'),
-            'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'No',
+            'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'NO',
         ], 500);
     }
 });
