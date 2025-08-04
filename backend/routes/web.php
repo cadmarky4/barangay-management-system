@@ -6,23 +6,79 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Check what tables exist in PostgreSQL
+Route::get('/check-tables', function () {
+    try {
+        $tables = \Illuminate\Support\Facades\DB::select("
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = 'public'
+        ");
+        
+        return response()->json([
+            'status' => 'success',
+            'connection' => config('database.default'),
+            'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'No',
+            'tables' => collect($tables)->pluck('table_name')->toArray(),
+            'table_count' => count($tables)
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
+            'connection' => config('database.default'),
+            'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'No',
+        ], 500);
+    }
+});
+
+// Force create migrations table and run migrations
+Route::get('/force-setup', function () {
+    try {
+        // Create migrations table if it doesn't exist
+        \Illuminate\Support\Facades\DB::statement("
+            CREATE TABLE IF NOT EXISTS migrations (
+                id SERIAL PRIMARY KEY,
+                migration VARCHAR(255) NOT NULL,
+                batch INTEGER NOT NULL
+            )
+        ");
+        
+        // Run fresh migrations
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+        
+        // Run seeds
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        // Check results
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database setup completed',
+            'user_count' => $userCount,
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
 // Database status check
 Route::get('/db-status', function () {
     try {
-        $connection = \Illuminate\Support\Facades\DB::connection();
-        $dbName = $connection->getDatabaseName();
-        $driver = $connection->getDriverName();
-        
-        // Test a simple query
-        $userCount = \App\Models\User::count();
-        $residentCount = \App\Models\Resident::count();
+        // Don't use User model, use raw query instead
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
         
         return response()->json([
             'status' => 'connected',
-            'driver' => $driver,
-            'database' => $dbName,
+            'driver' => \Illuminate\Support\Facades\DB::connection()->getDriverName(),
+            'database' => \Illuminate\Support\Facades\DB::connection()->getDatabaseName(),
             'user_count' => $userCount,
-            'resident_count' => $residentCount,
             'connection_name' => config('database.default'),
             'database_url_set' => env('DATABASE_URL') ? 'Yes' : 'No',
         ]);
@@ -43,7 +99,7 @@ Route::get('/run-migrations', function () {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         
         // Seed database if empty
-        $userCount = \App\Models\User::count();
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
         if ($userCount === 0) {
             \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         }
@@ -51,7 +107,7 @@ Route::get('/run-migrations', function () {
         return response()->json([
             'status' => 'success',
             'message' => 'Migrations and seeding completed',
-            'user_count' => \App\Models\User::count(),
+            'user_count' => \Illuminate\Support\Facades\DB::table('users')->count(),
         ]);
         
     } catch (\Exception $e) {
@@ -62,18 +118,21 @@ Route::get('/run-migrations', function () {
     }
 });
 
-// Create test user
+// Create test user without using User model
 Route::get('/create-test-user', function () {
     try {
-        $user = \App\Models\User::create([
+        $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
             'name' => 'Test Admin',
             'username' => 'testadmin', 
             'email' => 'test@admin.com',
             'password' => bcrypt('password123'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         
         return response()->json([
             'message' => 'Test user created successfully',
+            'user_id' => $userId,
             'username' => 'testadmin',
             'password' => 'password123'
         ]);
