@@ -217,6 +217,36 @@ Route::get('/create-core-tables', function () {
     }
 });
 
+// Activate superadmin account
+Route::get('/activate-superadmin', function () {
+    try {
+        $updated = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->update([
+                'status' => 'active',
+                'updated_at' => now()
+            ]);
+        
+        if ($updated) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Superadmin account activated successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Superadmin account not found'
+            ]);
+        }
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
 // Database status check
 Route::get('/db-status', function () {
     try {
