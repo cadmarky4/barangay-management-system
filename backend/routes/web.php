@@ -504,6 +504,235 @@ Route::get('/test-login', function () {
     }
 });
 
+// Complete PostgreSQL database setup for Render
+Route::get('/setup-postgresql-database', function () {
+    try {
+        $steps = [];
+        
+        // Step 1: Drop all existing tables
+        $steps[] = 'Dropping existing tables...';
+        \Illuminate\Support\Facades\DB::statement('DROP SCHEMA IF EXISTS public CASCADE');
+        \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
+        \Illuminate\Support\Facades\DB::statement('GRANT ALL ON SCHEMA public TO postgres');
+        \Illuminate\Support\Facades\DB::statement('GRANT ALL ON SCHEMA public TO public');
+        
+        // Step 2: Create migrations table
+        $steps[] = 'Creating migrations table...';
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE migrations (
+                id SERIAL PRIMARY KEY,
+                migration VARCHAR(255) NOT NULL,
+                batch INTEGER NOT NULL
+            )
+        ');
+
+        // Step 3: Create personal_access_tokens table
+        $steps[] = 'Creating personal_access_tokens table...';
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE personal_access_tokens (
+                id BIGSERIAL PRIMARY KEY,
+                tokenable_type VARCHAR(255) NOT NULL,
+                tokenable_id UUID NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                token VARCHAR(64) NOT NULL UNIQUE,
+                abilities TEXT,
+                last_used_at TIMESTAMP NULL,
+                expires_at TIMESTAMP NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+
+        // Step 4: Create complete users table with UUID extension
+        $steps[] = 'Enabling UUID extension...';
+        \Illuminate\Support\Facades\DB::statement('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
+        
+        $steps[] = 'Creating users table with complete schema...';
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE users (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                username VARCHAR(255) UNIQUE NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                email_verified_at TIMESTAMP NULL,
+                password VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                middle_name VARCHAR(255),
+                role VARCHAR(255) DEFAULT \'VIEWER\',
+                department VARCHAR(255),
+                position VARCHAR(255),
+                employee_id VARCHAR(255),
+                phone VARCHAR(255),
+                resident_id UUID,
+                notes TEXT,
+                is_active BOOLEAN DEFAULT true,
+                is_verified BOOLEAN DEFAULT false,
+                last_login_at TIMESTAMP NULL,
+                remember_token VARCHAR(100),
+                created_by UUID,
+                updated_by UUID,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                deleted_at TIMESTAMP NULL
+            )
+        ');
+
+        // Step 5: Create other essential tables
+        $steps[] = 'Creating residents table...';
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE residents (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                middle_name VARCHAR(255),
+                suffix VARCHAR(255),
+                birth_date DATE,
+                age INTEGER,
+                birth_place VARCHAR(255),
+                civil_status VARCHAR(50),
+                gender VARCHAR(20),
+                nationality VARCHAR(100) DEFAULT \'Filipino\',
+                purok VARCHAR(100),
+                barangay VARCHAR(255),
+                municipality VARCHAR(255),
+                province VARCHAR(255),
+                complete_address TEXT,
+                occupation VARCHAR(255),
+                mobile_number VARCHAR(20),
+                email_address VARCHAR(255),
+                voter_status VARCHAR(50),
+                person_with_disability BOOLEAN DEFAULT false,
+                senior_citizen BOOLEAN DEFAULT false,
+                indigenous_people BOOLEAN DEFAULT false,
+                status VARCHAR(50) DEFAULT \'ACTIVE\',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                deleted_at TIMESTAMP NULL
+            )
+        ');
+
+        $steps[] = 'Creating documents table...';
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE documents (
+                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                resident_id UUID,
+                document_type VARCHAR(255) NOT NULL,
+                purpose TEXT,
+                status VARCHAR(255) DEFAULT \'pending\',
+                valid_id_presented VARCHAR(255),
+                processing_fee DECIMAL(10,2) DEFAULT 50.00,
+                payment_status VARCHAR(255) DEFAULT \'paid\',
+                priority VARCHAR(255) DEFAULT \'medium\',
+                request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+
+        // Step 6: Create basic admin user directly with raw SQL
+        $steps[] = 'Creating superadmin user...';
+        $hashedPassword = password_hash('SuperAdmin123!', PASSWORD_DEFAULT);
+        $userId = \Illuminate\Support\Str::uuid();
+        
+        \Illuminate\Support\Facades\DB::statement("
+            INSERT INTO users (
+                id, username, email, password, first_name, last_name, 
+                role, department, position, employee_id, phone,
+                is_active, is_verified, email_verified_at, notes,
+                created_at, updated_at
+            ) VALUES (
+                '{$userId}',
+                'superadmin',
+                'superadmin@barangay.gov.ph',
+                '{$hashedPassword}',
+                'Super',
+                'Administrator',
+                'SUPER_ADMIN',
+                'ADMINISTRATION',
+                'System Administrator',
+                'EMP-001',
+                '+639171234567',
+                true,
+                true,
+                NOW(),
+                'Initial system administrator account',
+                NOW(),
+                NOW()
+            )
+        ");
+
+        // Step 7: Create regular admin user
+        $steps[] = 'Creating admin user...';
+        $adminPassword = password_hash('Admin123!', PASSWORD_DEFAULT);
+        $adminId = \Illuminate\Support\Str::uuid();
+        
+        \Illuminate\Support\Facades\DB::statement("
+            INSERT INTO users (
+                id, username, email, password, first_name, last_name,
+                role, department, position, employee_id, phone,
+                is_active, is_verified, email_verified_at, notes,
+                created_by, created_at, updated_at
+            ) VALUES (
+                '{$adminId}',
+                'admin',
+                'admin@barangay.gov.ph',  
+                '{$adminPassword}',
+                'Admin',
+                'User',
+                'ADMIN',
+                'ADMINISTRATION',
+                'Administrator',
+                'EMP-002',
+                '+639171234568',
+                true,
+                true,
+                NOW(),
+                'Secondary administrator account',
+                '{$userId}',
+                NOW(),
+                NOW()
+            )
+        ");
+
+        // Verify users were created
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
+        $superadmin = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'PostgreSQL database setup completed successfully',
+            'steps_completed' => $steps,
+            'user_count' => $userCount,
+            'superadmin_created' => $superadmin ? 'Yes' : 'No',
+            'superadmin_active' => $superadmin ? ($superadmin->is_active ? 'true' : 'false') : 'N/A',
+            'credentials' => [
+                'superadmin' => [
+                    'username' => 'superadmin',
+                    'password' => 'SuperAdmin123!'
+                ],
+                'admin' => [
+                    'username' => 'admin', 
+                    'password' => 'Admin123!'
+                ]
+            ],
+            'database_info' => [
+                'driver' => \Illuminate\Support\Facades\DB::connection()->getDriverName(),
+                'database' => \Illuminate\Support\Facades\DB::connection()->getDatabaseName()
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),  
+            'step_failed_at' => count($steps ?? []),
+            'completed_steps' => $steps ?? []
+        ], 500);
+    }
+});
+
 // Fix users table schema first
 Route::get('/fix-users-table-schema', function () {
     try {
