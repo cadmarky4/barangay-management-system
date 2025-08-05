@@ -504,6 +504,113 @@ Route::get('/test-login', function () {
     }
 });
 
+// Run UserSeeder specifically
+Route::get('/run-user-seeder', function () {
+    try {
+        // Run just the UserSeeder
+        \Illuminate\Support\Facades\Artisan::call('db:seed', [
+            '--class' => 'UserSeeder',
+            '--force' => true
+        ]);
+        
+        // Check if superadmin was created
+        $superadmin = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'UserSeeder completed successfully',
+            'output' => \Illuminate\Support\Facades\Artisan::output(),
+            'superadmin_created' => $superadmin ? 'Yes' : 'No',
+            'superadmin_active' => $superadmin ? $superadmin->is_active : 'N/A',
+            'credentials' => [
+                'username' => 'superadmin',
+                'password' => 'SuperAdmin123!'
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
+// Create just superadmin (fallback if seeder fails)
+Route::get('/create-just-superadmin', function () {
+    try {
+        // Delete existing superadmin
+        \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->delete();
+        
+        // Create superadmin directly using User model
+        \App\Models\User::create([
+            'username' => 'superadmin',
+            'email' => 'superadmin@barangay.gov.ph',
+            'password' => 'SuperAdmin123!', // User model will hash this
+            'first_name' => 'Super',
+            'last_name' => 'Administrator',
+            'phone' => '+639171234567',
+            'role' => 'SUPER_ADMIN',
+            'department' => 'ADMINISTRATION',
+            'position' => 'System Administrator',
+            'employee_id' => 'EMP-001',
+            'is_active' => true,
+            'is_verified' => true,
+            'email_verified_at' => now(),
+            'notes' => 'Initial system administrator account',
+        ]);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Superadmin created successfully using User model',
+            'credentials' => [
+                'username' => 'superadmin',
+                'password' => 'SuperAdmin123!'
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+// Run all seeders
+Route::get('/run-all-seeders', function () {
+    try {
+        // Run all seeders
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'All seeders completed successfully',
+            'output' => \Illuminate\Support\Facades\Artisan::output(),
+            'user_count' => $userCount,
+            'credentials' => [
+                'superadmin' => 'SuperAdmin123!',
+                'admin' => 'Admin123!',
+                'captain.santos' => 'Captain123!'
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
 // Database status check
 Route::get('/db-status', function () {
     try {
