@@ -504,6 +504,51 @@ Route::get('/test-login', function () {
     }
 });
 
+// Run Laravel migrations if they exist
+Route::get('/run-migrations', function () {
+    try {
+        // Try to run migrations
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        
+        // Check if users table exists now
+        $tables = \Illuminate\Support\Facades\DB::select("
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = 'public'
+        ");
+        
+        $userCount = 0;
+        $hasUsersTable = false;
+        
+        foreach ($tables as $table) {
+            if ($table->table_name === 'users') {
+                $hasUsersTable = true;
+                $userCount = \Illuminate\Support\Facades\DB::table('users')->count();
+                break;
+            }
+        }
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Migrations completed',
+            'output' => $output,
+            'tables' => collect($tables)->pluck('table_name')->toArray(),
+            'has_users_table' => $hasUsersTable,
+            'user_count' => $userCount,
+            'next_step' => $hasUsersTable ? 'Run /run-user-seeder to create users' : 'Run /setup-postgresql-database for complete setup'
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage(),
+            'suggestion' => 'Try /setup-postgresql-database instead'
+        ], 500);
+    }
+});
+
 // Complete PostgreSQL database setup for Render
 Route::get('/setup-postgresql-database', function () {
     try {
