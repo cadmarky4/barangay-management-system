@@ -13,7 +13,7 @@ import {
   FiChevronRight,
   FiUpload,
 } from "react-icons/fi";
-import sanMiguelLogo from "@/assets/sanMiguelLogo.jpg";
+import sanMiguelLogo from "@/assets/logo.jpg";
 
 interface SidebarProps {
   activeItem: string;
