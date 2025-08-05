@@ -56,7 +56,7 @@ const ViewProject: React.FC<ViewProjectProps> = ({ project, isOpen, onClose }) =
 
   // Sample additional data for the project view
   const projectDetails = {
-    location: 'Brgy. Sikatuna Village, Zone 1-3',
+    location: 'Brgy. West Triangle, Zone 1-3',
     projectManager: 'Juan Dela Cruz',
     expectedBeneficiaries: '12,000 residents',
     fundingSource: 'Barangay Fund',

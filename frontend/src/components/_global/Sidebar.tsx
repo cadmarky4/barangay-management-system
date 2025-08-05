@@ -344,11 +344,11 @@ const Sidebar: React.FC<SidebarProps> = ({
             className={`transition-all duration-200 ${
               !isMobile && !isExpanded ? "w-10 h-10" : "w-16 h-16"
             } rounded-full m-0`}
-            alt="Sikatuna Village Logo"
+            alt="West Triangle Logo"
           />
           <div className={`${!isMobile && !isExpanded ? "max-w-0" : ""}`}>
             <h1 className="whitespace-nowrap text-md font-bold text-gray-900">
-              Brgy. Sikatuna Village
+              Brgy. West Triangle
             </h1>
             <p
               className={`${

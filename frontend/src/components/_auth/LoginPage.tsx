@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import sanMiguelLogo from '../../assets/sanMiguelLogo.jpg';
+import sanMiguelLogo from '../../assets/logo.jpg';
 
 const LoginPage: React.FC = () => {
   const { login, isLoading, error: authError } = useAuth();
@@ -131,7 +131,7 @@ const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Brgy. Sikatuna Village</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Brgy. West Triangle</h1>
           <p className="text-gray-600 text-lg">Information Management System</p>
           <div className="w-16 h-px bg-gray-400 mx-auto mt-4"></div>
         </div>        
@@ -277,7 +277,7 @@ const LoginPage: React.FC = () => {
         {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
-            © 2025 Brgy. Sikatuna Village. All rights reserved.
+            © 2025 Brgy. West Triangle. All rights reserved.
           </p>
         </div>
       </div>
