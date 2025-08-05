@@ -16,7 +16,7 @@ try {
         'birth_date' => '1980-01-15',
         'contact_number' => '+639123456789',
         'email_address' => 'juan.delacruz@example.com',
-        'complete_address' => '123 Main St, Brgy. Sikatuna Village',
+        'complete_address' => '123 Main St, Brgy. West Triangle Village',
         'civil_status' => 'Married',
         'educational_background' => 'Bachelor of Public Administration',
         'position' => 'BARANGAY_CAPTAIN',
