@@ -504,6 +504,72 @@ Route::get('/test-login', function () {
     }
 });
 
+// Fix users table schema first
+Route::get('/fix-users-table-schema', function () {
+    try {
+        // Drop and recreate users table with all required columns
+        \Illuminate\Support\Facades\DB::statement('DROP TABLE IF EXISTS users CASCADE');
+        
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE users (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                username VARCHAR(255) UNIQUE NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                middle_name VARCHAR(255),
+                role VARCHAR(255) DEFAULT \'VIEWER\',
+                department VARCHAR(255),
+                position VARCHAR(255),
+                employee_id VARCHAR(255),
+                phone VARCHAR(255),
+                resident_id UUID,
+                notes TEXT,
+                is_active BOOLEAN DEFAULT true,
+                is_verified BOOLEAN DEFAULT false,
+                last_login_at TIMESTAMP NULL,
+                email_verified_at TIMESTAMP NULL,
+                remember_token VARCHAR(100),
+                created_by UUID,
+                updated_by UUID,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                deleted_at TIMESTAMP NULL
+            )
+        ');
+
+        // Create personal_access_tokens table for authentication
+        \Illuminate\Support\Facades\DB::statement('DROP TABLE IF EXISTS personal_access_tokens CASCADE');
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE personal_access_tokens (
+                id BIGSERIAL PRIMARY KEY,
+                tokenable_type VARCHAR(255) NOT NULL,
+                tokenable_id UUID NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                token VARCHAR(64) NOT NULL UNIQUE,
+                abilities TEXT,
+                last_used_at TIMESTAMP NULL,
+                expires_at TIMESTAMP NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Users table schema fixed with all required columns',
+            'next_step' => 'Now run /run-user-seeder to create users'
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
 // Run UserSeeder specifically
 Route::get('/run-user-seeder', function () {
     try {
