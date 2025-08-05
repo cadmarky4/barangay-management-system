@@ -139,19 +139,49 @@ Route::get('/create-core-tables', function () {
         \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE');
         \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
         
-        // Create users table manually
+        // Create users table with is_active field
         \Illuminate\Support\Facades\DB::statement('
             CREATE TABLE users (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                name VARCHAR(255),
                 username VARCHAR(255) UNIQUE NOT NULL,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                role VARCHAR(255) DEFAULT \'user\',
-                status VARCHAR(255) DEFAULT \'active\',
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                middle_name VARCHAR(255),
+                role VARCHAR(255) DEFAULT \'VIEWER\',
+                department VARCHAR(255),
+                position VARCHAR(255),
+                employee_id VARCHAR(255),
+                phone VARCHAR(255),
+                resident_id UUID,
+                notes TEXT,
+                is_active BOOLEAN DEFAULT true,
+                is_verified BOOLEAN DEFAULT false,
+                last_login_at TIMESTAMP NULL,
+                email_verified_at TIMESTAMP NULL,
+                remember_token VARCHAR(100),
+                created_by UUID,
+                updated_by UUID,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 deleted_at TIMESTAMP NULL
+            )
+        ');
+        
+        // Create personal_access_tokens table for authentication
+        \Illuminate\Support\Facades\DB::statement('
+            CREATE TABLE personal_access_tokens (
+                id BIGSERIAL PRIMARY KEY,
+                tokenable_type VARCHAR(255) NOT NULL,
+                tokenable_id UUID NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                token VARCHAR(64) NOT NULL UNIQUE,
+                abilities TEXT,
+                last_used_at TIMESTAMP NULL,
+                expires_at TIMESTAMP NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ');
         
@@ -166,6 +196,10 @@ Route::get('/create-core-tables', function () {
                 complete_address TEXT,
                 mobile_number VARCHAR(255),
                 email_address VARCHAR(255),
+                birth_date DATE,
+                age INTEGER,
+                gender VARCHAR(20),
+                civil_status VARCHAR(50),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 deleted_at TIMESTAMP NULL
@@ -190,13 +224,34 @@ Route::get('/create-core-tables', function () {
             )
         ');
         
-        // Seed a test user
+        // Seed a superadmin user with correct is_active field
         \Illuminate\Support\Facades\DB::table('users')->insert([
-            'name' => 'Super Admin',
             'username' => 'superadmin',
             'email' => 'superadmin@barangay.gov.ph',
             'password' => bcrypt('SuperAdmin123!'),
-            'role' => 'super_admin',
+            'first_name' => 'Super',
+            'last_name' => 'Administrator',
+            'role' => 'SUPER_ADMIN',
+            'department' => 'Administration',
+            'position' => 'System Administrator',
+            'is_active' => true,
+            'is_verified' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Create a regular admin user too
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+            'username' => 'admin',
+            'email' => 'admin@barangay.gov.ph',
+            'password' => bcrypt('Admin123!'),
+            'first_name' => 'Barangay',
+            'last_name' => 'Admin',
+            'role' => 'ADMIN',
+            'department' => 'Administration',
+            'position' => 'Administrator',
+            'is_active' => true,
+            'is_verified' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -205,14 +260,60 @@ Route::get('/create-core-tables', function () {
         
         return response()->json([
             'status' => 'success',
-            'message' => 'Core tables created successfully',
+            'message' => 'Core tables created successfully with proper user accounts',
             'user_count' => $userCount,
+            'users_created' => [
+                'superadmin' => 'SuperAdmin123!',
+                'admin' => 'Admin123!'
+            ]
         ]);
         
     } catch (\Exception $e) {
         return response()->json([
             'status' => 'failed',
             'error' => $e->getMessage(),
+        ], 500);
+    }
+});
+
+// Create proper superadmin using User model
+Route::get('/create-proper-superadmin', function () {
+    try {
+        // Delete existing superadmin
+        \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->delete();
+        
+        // Create new superadmin using User model (ensures proper field handling)
+        $user = \App\Models\User::create([
+            'username' => 'superadmin',
+            'email' => 'superadmin@barangay.gov.ph',
+            'password' => 'SuperAdmin123!', // Will be auto-hashed by User model
+            'first_name' => 'Super',
+            'last_name' => 'Administrator', 
+            'role' => 'SUPER_ADMIN',
+            'department' => 'Administration',
+            'position' => 'System Administrator',
+            'is_active' => true,
+            'is_verified' => true,
+        ]);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Proper superadmin created using User model',
+            'user' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'is_active' => $user->is_active,
+                'role' => $user->role
+            ]
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
         ], 500);
     }
 });
@@ -229,10 +330,9 @@ Route::get('/check-superadmin', function () {
                 'status' => 'found',
                 'user' => [
                     'id' => $user->id,
-                    'name' => $user->name,
                     'username' => $user->username,
                     'email' => $user->email,
-                    'status' => $user->status ?? 'null',
+                    'is_active' => $user->is_active ?? 'field not found',
                     'role' => $user->role ?? 'null',
                     'created_at' => $user->created_at,
                 ]
@@ -260,14 +360,18 @@ Route::get('/fix-superadmin', function () {
             ->where('username', 'superadmin')
             ->delete();
         
-        // Create new active superadmin
+        // Create new active superadmin with is_active field
         $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
-            'name' => 'Super Administrator',
             'username' => 'superadmin',
             'email' => 'superadmin@barangay.gov.ph',
             'password' => bcrypt('SuperAdmin123!'),
-            'role' => 'super_admin',
-            'status' => 'active',
+            'first_name' => 'Super',
+            'last_name' => 'Administrator',
+            'role' => 'SUPER_ADMIN',
+            'department' => 'Administration',
+            'position' => 'System Administrator',
+            'is_active' => true,
+            'is_verified' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -279,11 +383,11 @@ Route::get('/fix-superadmin', function () {
         
         return response()->json([
             'status' => 'success',
-            'message' => 'Superadmin account recreated successfully',
+            'message' => 'Superadmin account recreated successfully with is_active field',
             'user' => [
                 'id' => $user->id,
                 'username' => $user->username,
-                'status' => $user->status,
+                'is_active' => $user->is_active,
                 'role' => $user->role
             ]
         ]);
@@ -296,13 +400,49 @@ Route::get('/fix-superadmin', function () {
     }
 });
 
-// Activate superadmin account
+// Fix user schema - add is_active column if missing
+Route::get('/fix-user-status', function () {
+    try {
+        // Check if is_active column exists
+        $hasIsActive = \Illuminate\Support\Facades\Schema::hasColumn('users', 'is_active');
+        
+        if (!$hasIsActive) {
+            // Add is_active column if it doesn't exist
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT true');
+        }
+        
+        // Update all users to be active
+        \Illuminate\Support\Facades\DB::table('users')->update(['is_active' => true]);
+        
+        $user = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User schema fixed - is_active column ' . ($hasIsActive ? 'already existed' : 'added'),
+            'user' => $user ? [
+                'username' => $user->username,
+                'is_active' => $user->is_active,
+                'role' => $user->role
+            ] : 'No superadmin found'
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+// Activate superadmin account (legacy support)
 Route::get('/activate-superadmin', function () {
     try {
         $updated = \Illuminate\Support\Facades\DB::table('users')
             ->where('username', 'superadmin')
             ->update([
-                'status' => 'active',
+                'is_active' => true,
                 'updated_at' => now()
             ]);
         
@@ -317,6 +457,44 @@ Route::get('/activate-superadmin', function () {
                 'message' => 'Superadmin account not found'
             ]);
         }
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+// Test login credentials
+Route::get('/test-login', function () {
+    try {
+        $user = \Illuminate\Support\Facades\DB::table('users')
+            ->where('username', 'superadmin')
+            ->first();
+        
+        if (!$user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'User not found'
+            ]);
+        }
+        
+        // Test password
+        $passwordCheck = \Illuminate\Support\Facades\Hash::check('SuperAdmin123!', $user->password);
+        
+        return response()->json([
+            'status' => 'success',
+            'user_found' => true,
+            'password_correct' => $passwordCheck,
+            'is_active' => $user->is_active ?? 'field missing',
+            'user_details' => [
+                'username' => $user->username,
+                'email' => $user->email,
+                'role' => $user->role,
+                'is_active' => $user->is_active ?? null
+            ]
+        ]);
         
     } catch (\Exception $e) {
         return response()->json([
