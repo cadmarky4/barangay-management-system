@@ -34,7 +34,7 @@ return new class extends Migration
             $table->enum('backup_frequency', ['Daily', 'Weekly', 'Monthly'])->default('Daily');
             
             // System
-            $table->string('system_name')->default('LGU Information Management System');
+            $table->string('system_name')->default('Barangay West Triangle');
             $table->string('version_number')->default('1.0.0');
             
             $table->timestamps();

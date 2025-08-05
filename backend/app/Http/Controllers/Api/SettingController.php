@@ -94,7 +94,7 @@ class SettingController extends Controller
             $settings = Setting::current();
             
             $settings->update([
-                'system_name' => 'LGU Information Management System',
+                'system_name' => 'Barangay West Triangle',
                 'version_number' => '1.0.0',
                 'primary_language' => 'English',
                 'session_timeout' => 30,
@@ -177,7 +177,7 @@ class SettingController extends Controller
             $settings = Setting::current();
             
             $settings->update([
-                'system_name' => 'LGU Information Management System',
+                'system_name' => 'Barangay West Triangle',
                 'version_number' => '1.0.0',
                 'primary_language' => 'English',
                 'session_timeout' => 30,
