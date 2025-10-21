@@ -17,8 +17,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasUuids;
 
-    protected $keyType = 'string';
     public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * Get fillable fields from schema
@@ -89,15 +89,22 @@ class User extends Authenticatable
         
         // Auto-set created_by and updated_by
         static::creating(function ($model) {
+            // ✅ FIX: Auto-generate UUID if missing
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+            }
+
             if (Auth::check() && !$model->created_by) {
                 $model->created_by = Auth::id();
             }
+
             
             // Auto-verify super admin and admin users
             if (in_array($model->role, ['SUPER_ADMIN', 'ADMIN'])) {
                 $model->is_verified = true;
             }
         });
+
 
         static::updating(function ($model) {
             if (Auth::check() && !$model->updated_by) {
@@ -110,6 +117,20 @@ class User extends Authenticatable
             }
         });
     }
+
+            /**
+         * Automatically hash passwords when set
+         */
+        public function setPasswordAttribute($value)
+        {
+            if ($value) {
+                $this->attributes['password'] = \Illuminate\Support\Facades\Hash::needsRehash($value)
+                    ? bcrypt($value)
+                    : $value;
+            }
+        }
+
+
 
     /**
      * Computed attributes

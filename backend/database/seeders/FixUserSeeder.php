@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use App\Models\User;
 
 class FixUserSeeder extends Seeder
 {
@@ -38,15 +40,17 @@ class FixUserSeeder extends Seeder
             DB::table('users')->where('username', 'superadmin')->delete();
             
             // Create new superadmin with proper fields
-            DB::table('users')->insert([
+            User::create([
+                'id' => (string) Str::uuid(),
                 'username' => 'superadmin',
                 'email' => 'superadmin@barangay.gov.ph',
                 'password' => bcrypt('SuperAdmin123!'),
                 'first_name' => 'Super',
                 'last_name' => 'Administrator',
                 'role' => 'SUPER_ADMIN',
-                'department' => 'Administration',
+                'department' => 'Admin', // ✅ changed value here
                 'position' => 'System Administrator',
+                'phone' => '09123456789', // ✅ Add this line (or any placeholder number)
                 'is_active' => true,
                 'is_verified' => true,
                 'created_at' => now(),
